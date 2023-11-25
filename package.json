@@ -1,7 +1,7 @@
 {
   "name": "@rbxts/fable",
   "version": "1.0.0",
-  "description": "A story builder",
+  "description": "An easy to use story-game builder for Roblox.",
   "main": "out/init.lua",
   "scripts": {
     "build": "rbxtsc",
@@ -9,8 +9,9 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "strawberrys",
+  "repository": "https://github.com/strawbberrys/Fable/",
+  "license": "MIT",
   "types": "out/index.d.ts",
   "files": [
     "out",
