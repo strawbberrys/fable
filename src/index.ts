@@ -1,7 +1,6 @@
+export { Act } from './Act';
 export { Character } from './Character';
 export { Fable } from './Fable';
-export { Act } from './Act';
-
 export * from './Tasks';
 
 /*
