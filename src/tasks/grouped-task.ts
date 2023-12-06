@@ -1,13 +1,15 @@
-import { BaseTask, WatchFunc } from './BaseTask';
-import { AnyTask } from '.';
+import { BaseTask, WatchFunc } from './base-task';
+import type { AnyTask } from '.';
 
-type TaskCallbackFunc = (task: AnyTask) => void;
+type TaskCallback = (task: AnyTask) => void;
 
-export class ListedTask extends BaseTask {
-	protected taskCompletionCallbackList: Array<TaskCallbackFunc>;
-	protected watchFunc: WatchFunc;
+export class GroupedTask extends BaseTask {
+	private readonly tasks: ReadonlyArray<AnyTask>;
+	protected readonly watchFunc: WatchFunc;
 
-	constructor(private tasks: ReadonlyArray<AnyTask>) {
+	private taskCompletionCallbackList: Array<TaskCallback>;
+
+	constructor(tasks: ReadonlyArray<AnyTask>) {
 		super();
 
 		this.watchFunc = (complete) => {
@@ -17,11 +19,7 @@ export class ListedTask extends BaseTask {
 			const totalTasks = tasks.size();
 
 			for (const task of tasks) {
-				const currentThread = coroutine.running();
-
 				task.onCompletion(() => {
-					coroutine.resume(currentThread);
-
 					for (const callback of taskCompletionCallbackList) {
 						callback(task);
 					}
@@ -30,21 +28,20 @@ export class ListedTask extends BaseTask {
 						complete();
 					}
 				});
-
-				coroutine.yield();
 			}
 		};
 
+		this.tasks = tasks;
 		this.taskCompletionCallbackList = new Array();
 	}
 
-	getTasks(): ReadonlyArray<{ task: AnyTask; complete: boolean; num: number }> {
+	public getTasks(): ReadonlyArray<{ task: AnyTask; complete: boolean; num: number }> {
 		return this.tasks.map((task, index) => {
 			return { task: task, complete: task.isComplete(), num: index };
 		});
 	}
 
-	onTaskCompletion(callback: TaskCallbackFunc) {
+	public onTaskCompletion(callback: TaskCallback) {
 		this.taskCompletionCallbackList.push(callback);
 	}
 }

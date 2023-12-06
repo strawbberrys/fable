@@ -1,10 +1,8 @@
-import { AnyTask } from './Tasks';
-
-type CallbackFunc = () => void;
+import type { AnyTask } from './tasks';
 
 export class Act {
-	private completionCallbackList: Array<CallbackFunc>;
-	private startCallbackList: Array<CallbackFunc>;
+	private completionCallbackList: Array<Callback>;
+	private startCallbackList: Array<Callback>;
 
 	private task?: AnyTask;
 
@@ -124,7 +122,7 @@ export class Act {
 	 *
 	 * @param callback - The function to be ran on completion.
 	 */
-	onCompletion(callback: CallbackFunc) {
+	onCompletion(callback: Callback) {
 		this.completionCallbackList.push(callback);
 	}
 
@@ -135,7 +133,7 @@ export class Act {
 	 *
 	 * @param callback - The function to be ran on start.
 	 */
-	onStart(callback: CallbackFunc) {
+	onStart(callback: Callback) {
 		this.startCallbackList.push(callback);
 	}
 }

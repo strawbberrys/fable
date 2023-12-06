@@ -1,5 +1,5 @@
-import { Character } from './Character';
-import { Act } from './Act';
+import { Character } from './character';
+import { Act } from './act';
 
 export class Fable {
 	private characters: Map<string, Character>;

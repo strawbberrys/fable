@@ -1,9 +1,8 @@
-type CallbackFunc = () => void;
 export type WatchFunc = (complete: () => void) => void;
 
 export abstract class BaseTask {
-	private completionCallbackList: Array<CallbackFunc>;
-	private startCallbackList: Array<CallbackFunc>;
+	private completionCallbackList: Array<Callback>;
+	private startCallbackList: Array<Callback>;
 
 	protected abstract watchFunc: WatchFunc;
 
@@ -16,6 +15,19 @@ export abstract class BaseTask {
 
 		this.completed = false;
 		this.running = false;
+	}
+
+	complete() {
+		assert(!this.completed, 'This task has already completed');
+
+		const completionCallbackList = this.completionCallbackList;
+
+		this.completed = true;
+		this.running = false;
+
+		for (const callback of completionCallbackList) {
+			callback();
+		}
 	}
 
 	start() {
@@ -35,18 +47,7 @@ export abstract class BaseTask {
 		}
 	}
 
-	complete() {
-		assert(!this.completed, 'This task has already completed');
-
-		const completionCallbackList = this.completionCallbackList;
-
-		this.completed = true;
-		this.running = false;
-
-		for (const callback of completionCallbackList) {
-			callback();
-		}
-	}
+	// watcher() {} (THIS WILL REPLACE watchFunc and hopefully be cleaner to implement...)
 
 	isComplete(): boolean {
 		return this.completed;
@@ -56,11 +57,11 @@ export abstract class BaseTask {
 		return this.running;
 	}
 
-	onStart(callback: CallbackFunc) {
+	onStart(callback: Callback) {
 		this.startCallbackList.push(callback);
 	}
 
-	onCompletion(callback: CallbackFunc) {
+	onCompletion(callback: Callback) {
 		this.completionCallbackList.push(callback);
 	}
 }

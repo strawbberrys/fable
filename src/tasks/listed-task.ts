@@ -1,9 +1,9 @@
-import { BaseTask, WatchFunc } from './BaseTask';
+import { BaseTask, WatchFunc } from './base-task';
 import { AnyTask } from '.';
 
 type TaskCallbackFunc = (task: AnyTask) => void;
 
-export class GroupedTask extends BaseTask {
+export class ListedTask extends BaseTask {
 	protected taskCompletionCallbackList: Array<TaskCallbackFunc>;
 	protected watchFunc: WatchFunc;
 
@@ -17,7 +17,11 @@ export class GroupedTask extends BaseTask {
 			const totalTasks = tasks.size();
 
 			for (const task of tasks) {
+				const currentThread = coroutine.running();
+
 				task.onCompletion(() => {
+					coroutine.resume(currentThread);
+
 					for (const callback of taskCompletionCallbackList) {
 						callback(task);
 					}
@@ -26,6 +30,8 @@ export class GroupedTask extends BaseTask {
 						complete();
 					}
 				});
+
+				coroutine.yield();
 			}
 		};
 
