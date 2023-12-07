@@ -1,5 +1,5 @@
 {
-  "name": "@rbxts/fable",
+  "name": "fable",
   "version": "0.9.0",
   "description": "An easy to use story-game builder for Roblox.",
   "main": "out/init.lua",
