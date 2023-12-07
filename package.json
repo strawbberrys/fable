@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "strawberrys",
-  "repository": "https://github.com/strawbberrys/Fable/",
+  "repository": "https://github.com/strawbberrys/fable.git",
   "license": "MIT",
   "types": "out/index.d.ts",
   "files": [
