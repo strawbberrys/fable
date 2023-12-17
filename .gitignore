@@ -1,9 +1,7 @@
 /node_modules
 /out
-/include
 /docs
 /example/out
-/example/include
 *.rbxl
 *.tsbuildinfo
 *.tgz
