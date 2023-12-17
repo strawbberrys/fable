@@ -8,7 +8,7 @@ export class Watcher {
 		this.watchFunction = watchFunction;
 	}
 
-	watch(completionFunction: CompletionFunction) {
+	public watch(completionFunction: CompletionFunction) {
 		this.watchFunction(completionFunction);
 	}
 }

@@ -5,11 +5,11 @@ export class Event {
 		this.callbacks = new Array<Callback>();
 	}
 
-	connect(callback: Callback) {
+	public connect(callback: Callback) {
 		this.callbacks.push(callback);
 	}
 
-	fire() {
+	public fire() {
 		for (const callback of this.callbacks) {
 			callback();
 		}

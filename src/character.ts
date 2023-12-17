@@ -7,13 +7,13 @@ export class Character {
 		this.name = name;
 	}
 
-	addDialogue(name: string, dialogue: ReadonlyArray<string>) {
+	public addDialogue(name: string, dialogue: ReadonlyArray<string>) {
 		assert(!this.dialogue.has(name), "Character already has dialogue with that name");
 
 		this.dialogue.set(name, dialogue);
 	}
 
-	playDialogue(name: string) {
+	public playDialogue(name: string) {
 		assert(this.dialogue.has(name), "Character has no dialogue with that name");
 	}
 }

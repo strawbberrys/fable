@@ -16,7 +16,7 @@ export class Fable {
 		this.name = name;
 	}
 
-	addAct(act: Act) {
+	public addAct(act: Act) {
 		const acts = this.acts;
 		const actName = act.name;
 
@@ -25,7 +25,7 @@ export class Fable {
 		acts.set(actName, act);
 	}
 
-	addActs(actList: ReadonlyArray<Act>) {
+	public addActs(actList: ReadonlyArray<Act>) {
 		const acts = this.acts;
 
 		for (const act of actList) {
@@ -37,7 +37,7 @@ export class Fable {
 		}
 	}
 
-	addCharacter(character: Character) {
+	public addCharacter(character: Character) {
 		const characters = this.characters;
 		const characterName = character.name;
 
@@ -49,7 +49,7 @@ export class Fable {
 		characters.set(characterName, character);
 	}
 
-	addCharacters(characterList: ReadonlyArray<Character>) {
+	public addCharacters(characterList: ReadonlyArray<Character>) {
 		const characters = this.characters;
 
 		for (const character of characterList) {
@@ -64,7 +64,7 @@ export class Fable {
 		}
 	}
 
-	playAct(name: string) {
+	public playAct(name: string) {
 		const currentAct = this.currentAct;
 		const targetAct = this.acts.get(name);
 
