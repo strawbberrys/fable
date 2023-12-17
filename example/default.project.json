@@ -1,0 +1,44 @@
+{
+	"name": "fable-example",
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"rbxts_include": {
+				"$path": "include",
+				"node_modules": {
+					"$className": "Folder",
+					"@rbxts": {
+						"$path": "../node_modules/@rbxts"
+					}
+				}
+			},
+			"fable": {
+				"$path": "out/src"
+			}
+		},
+		"ServerScriptService": {
+			"$path": "out/example/src/server"
+		},
+		"Workspace": {
+			"Baseplate": {
+				"$className": "Part",
+				"$properties": {
+					"Anchored": true,
+					"Locked": true,
+					"Size": [1000, 1, 1000]
+				}
+			},
+			"Home": {
+				"$className": "Model",
+				"DoorPart": {
+					"$className": "Part",
+					"$properties": {
+						"Anchored": true,
+						"Size": [4, 10, 2],
+						"Position": [0.0, 5.5, -10.0]
+					}
+				}
+			}
+		}
+	}
+}

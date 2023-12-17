@@ -15,14 +15,16 @@
 		"moduleDetection": "force",
 		"strict": true,
 		"target": "ESNext",
-		"typeRoots": ["./node_modules/@rbxts"],
+		"typeRoots": ["../node_modules/@rbxts"],
 
 		// configurable
-		"rootDir": "./src",
+		"rootDirs": ["./src", "../src"],
 		"outDir": "./out",
 		"incremental": true,
 		"tsBuildInfoFile": "./out/tsconfig.tsbuildinfo",
-		"declaration": true
+		"declaration": true,
+		"paths": {
+			"@rbxts/fable": ["../src"]
+		}
 	},
-	"exclude": ["./example", "./out"]
 }

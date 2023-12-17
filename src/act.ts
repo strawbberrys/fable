@@ -1,139 +1,61 @@
-import type { AnyTask } from './tasks';
+import { Event } from "./util";
+import { Task } from "./task";
 
-export class Act {
-	private completionCallbackList: Array<Callback>;
-	private startCallbackList: Array<Callback>;
+export class Act<T extends Task = Task> {
+	public readonly name: string;
+	private readonly task?: T;
 
-	private task?: AnyTask;
+	private _isCompleted: boolean;
+	private _isPlaying: boolean;
 
-	private playing: boolean;
-	private completed: boolean;
+	public readonly completed: Event;
+	public readonly playing: Event;
 
-	/**
-	 * Creates an {@link Act}.
-	 *
-	 * @param name - A name for the {@link Act}.
-	 */
-	constructor(private name: string) {
-		this.completionCallbackList = new Array();
-		this.startCallbackList = new Array();
+	constructor(name: string, task?: T) {
+		this.name = name;
+		this.task = task;
 
-		this.playing = false;
-		this.completed = false;
+		this._isCompleted = false;
+		this._isPlaying = false;
+
+		this.completed = new Event();
+		this.playing = new Event();
 	}
 
-	/**
-	 * Plays the {@link Act}.
-	 *
-	 * @remarks
-	 * This will call every function passed to {@link Act.onStart}.
-	 *
-	 * @throws
-	 * Thrown if the {@link Act} has already completed.
-	 *
-	 * @throws
-	 * Thrown if the {@link Act} is currently playing.
-	 */
-	play() {
-		assert(!this.completed, 'This act has already completed');
-		assert(!this.playing, 'This act is currently playing');
+	public complete() {
+		assert(!this._isCompleted, "Attempt to complete an Act that has already completed");
+		assert(this._isPlaying, "Attempt to complete an Act that is not playing");
+
+		this.completed.fire();
+
+		this._isCompleted = true;
+		this._isPlaying = false;
+	}
+
+	public play() {
+		assert(!this._isCompleted, "Attempt to play an Act that has already completed"); // Don't think there's any reason to not allow this?
+		assert(!this._isPlaying, "Attempt to play an Act that is already playing");
 
 		const task = this.task;
-		const startCallbackList = this.startCallbackList;
-
-		this.playing = true;
-
-		for (const callback of startCallbackList) {
-			callback();
-		}
 
 		if (task) {
-			task.onCompletion(() => {
+			task.completed.connect(() => {
 				this.complete();
 			});
 
 			task.start();
 		}
+
+		this.playing.fire();
+
+		this._isPlaying = true;
 	}
 
-	/**
-	 * Completes the {@link Act}.
-	 *
-	 * @remarks
-	 * This will call every function passed to {@link Act.onCompletion}.
-	 *
-	 * @throws
-	 * Thrown if the {@link Act} has already completed.
-	 */
-	complete() {
-		assert(!this.completed, 'This act has already completed');
-
-		const completionCallbackList = this.completionCallbackList;
-
-		this.playing = false;
-		this.completed = true;
-
-		for (const callback of completionCallbackList) {
-			callback();
-		}
+	public isCompleted(): boolean {
+		return this._isCompleted;
 	}
 
-	/**
-	 * @returns The name of the {@link Act}.
-	 */
-	getName(): string {
-		return this.name;
-	}
-
-	/**
-	 * @returns A boolean representing the playing status of the {@link Act}.
-	 */
-	isPlaying(): boolean {
-		return this.playing;
-	}
-
-	/**
-	 * @returns A boolean representing the completion status of the {@link Act}.
-	 */
-	isComplete(): boolean {
-		return this.completed;
-	}
-
-	/**
-	 * Sets the {@link Act}'s task.
-	 * If set, the task will be played as soon as the {@link Act} plays.
-	 * If you want multiple tasks in a scene, use something like a {@link ListedTask} or {@link GroupedTask}.
-	 *
-	 * @param task - Any task which extends {@link BaseTask}.
-	 *
-	 * @throws
-	 * Thrown if a task has already been set in the {@link Act}.
-	 */
-	setTask(task: AnyTask) {
-		assert(this.task === undefined, 'A task has already been set in this Act');
-
-		this.task = task;
-	}
-
-	/**
-	 * Adds a function to be ran on the {@link Act}'s completion.
-	 *
-	 * @event
-	 *
-	 * @param callback - The function to be ran on completion.
-	 */
-	onCompletion(callback: Callback) {
-		this.completionCallbackList.push(callback);
-	}
-
-	/**
-	 * Adds a function to be ran when the {@link Act} starts.
-	 *
-	 * @event
-	 *
-	 * @param callback - The function to be ran on start.
-	 */
-	onStart(callback: Callback) {
-		this.startCallbackList.push(callback);
+	public isPlaying(): boolean {
+		return this._isPlaying;
 	}
 }
