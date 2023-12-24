@@ -1,3 +1,3 @@
-import { myFable } from "./myFable";
+import { myFable } from "./my-fable";
 
 myFable.playAct("intro");

@@ -25,6 +25,7 @@
 		"declaration": true,
 		"paths": {
 			"@rbxts/fable": ["../src"]
-		}
+		},
+		"baseUrl": "."
 	},
 }

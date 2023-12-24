@@ -1,19 +1,14 @@
-export class Character {
-	private dialogue: Map<string, ReadonlyArray<string>>;
+import { Dialogue } from "./dialogue";
+
+export class Character<D extends Dialogue = Dialogue> {
+	private readonly dialogue: D;
 	public readonly name: string;
 
-	constructor(name: string) {
-		this.dialogue = new Map<string, ReadonlyArray<string>>();
+	constructor(name: string, dialogue: D) {
+		this.dialogue = dialogue;
 		this.name = name;
 	}
 
-	public addDialogue(name: string, dialogue: ReadonlyArray<string>) {
-		assert(!this.dialogue.has(name), "Character already has dialogue with that name");
-
-		this.dialogue.set(name, dialogue);
-	}
-
-	public playDialogue(name: string) {
-		assert(this.dialogue.has(name), "Character has no dialogue with that name");
-	}
+	public say(messages: ReadonlyArray<string>) {}
+	public startDialogue() {}
 }

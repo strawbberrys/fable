@@ -1,5 +1,16 @@
 import { Act } from "./act";
 import { Character } from "./character";
+import { UiProvider } from "./ui-provider";
+
+/*
+	need to add basic libraries/methods to make game creation even easier.
+
+	* lobby system
+	* sound and music (implement into Act)
+	* cut-scenes (implement into Act)
+	* data saving
+	* life system
+*/
 
 export class Fable {
 	private acts: Map<string, Act>;
@@ -9,7 +20,7 @@ export class Fable {
 
 	public readonly name: string;
 
-	constructor(name: string) {
+	constructor(name: string, uiProvider?: UiProvider) {
 		this.acts = new Map<string, Act>();
 		this.characters = new Map<string, Character>();
 

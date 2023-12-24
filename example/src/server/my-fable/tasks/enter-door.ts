@@ -3,7 +3,7 @@ import { Task, Watcher } from "@rbxts/fable";
 const Players = game.GetService("Players");
 const Workspace = game.GetService("Workspace");
 
-const doorPart = Workspace.Home.DoorPart;
+const prompt = Workspace.map.door.doorKnob.ProximityPrompt;
 const teleportLocation = new CFrame(500, 5, 500);
 
 function teleportPlayers(location: CFrame) {
@@ -18,16 +18,11 @@ function teleportPlayers(location: CFrame) {
 }
 
 const watcher = new Watcher((complete) => {
-	doorPart.Touched.Once((otherPart) => {
-		const character = otherPart.FindFirstAncestorOfClass("Model");
-		const player = Players.GetPlayerFromCharacter(character);
-
-		if (player) {
-			print(`${player.Name} touched the door.`);
-			teleportPlayers(teleportLocation);
-			complete();
-		}
+	prompt.Triggered.Once((player) => {
+		print(`${player.Name} opened the door.`);
+		teleportPlayers(teleportLocation);
+		complete();
 	});
 });
 
-export const enterHouse = new Task(watcher);
+export const enterDoor = new Task(watcher);
