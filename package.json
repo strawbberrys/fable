@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/fable",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "An easy to use story (game) creator for Roblox. Made in roblox-ts.",
   "main": "out/init.lua",
   "scripts": {

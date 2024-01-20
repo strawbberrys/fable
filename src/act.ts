@@ -1,7 +1,7 @@
 import { Event } from "./util";
 import type { Task } from "./task";
 
-export class Act<N extends string = string, T extends Task | undefined = undefined> {
+export class Act<N extends string = string, T extends Task = Task> {
 	public readonly name: N;
 	private readonly task?: T;
 
