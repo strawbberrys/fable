@@ -1,14 +1,16 @@
-import { Dialogue } from "./dialogue";
+import type { Dialogue } from "./dialogue";
+import { showDialogue } from "./remotes";
 
-export class Character<D extends Dialogue = Dialogue> {
-	private readonly dialogue: D;
+export class Character {
 	public readonly name: string;
 
-	constructor(name: string, dialogue: D) {
-		this.dialogue = dialogue;
+	constructor(name: string) {
 		this.name = name;
 	}
 
-	public say(messages: ReadonlyArray<string>) {}
-	public startDialogue() {}
+	public say(dialogue: Dialogue, players: ReadonlyArray<Player>) {
+		for (const player of players) {
+			showDialogue.FireClient(player, dialogue);
+		}
+	}
 }

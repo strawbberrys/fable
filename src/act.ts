@@ -1,8 +1,8 @@
 import { Event } from "./util";
-import { Task } from "./task";
+import type { Task } from "./task";
 
-export class Act<T extends Task = Task> {
-	public readonly name: string;
+export class Act<N extends string = string, T extends Task | undefined = undefined> {
+	public readonly name: N;
 	private readonly task?: T;
 
 	private _isCompleted: boolean;
@@ -11,7 +11,7 @@ export class Act<T extends Task = Task> {
 	public readonly completed: Event;
 	public readonly playing: Event;
 
-	constructor(name: string, task?: T) {
+	constructor(name: N, task?: T) {
 		this.name = name;
 		this.task = task;
 

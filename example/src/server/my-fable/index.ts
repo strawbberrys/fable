@@ -1,12 +1,9 @@
 import { Fable } from "@rbxts/fable";
-import { CocoTheCube } from "./characters";
-import { DanTheDino } from "./characters";
-import { Intro } from "./acts";
+import { acts } from "./acts";
+import { characters } from "./characters";
 
-export const myFable = new Fable("my-fable");
-
-myFable.addCharacter(CocoTheCube);
-myFable.addCharacter(DanTheDino);
-// myFable.addCharacters([CocoTheCube, DanTheDino]);
-
-myFable.addAct(Intro);
+export const myFable = new Fable({
+	acts: acts,
+	characters: characters,
+	name: "my-fable",
+});

@@ -1,9 +1,11 @@
-import { Act } from "./act";
-import { Character } from "./character";
-import { UiProvider } from "./ui-provider";
+import type { Act } from "./act";
+import type { Character } from "./character";
+
+// The ultimate goal of this library is to make the simplest yet most customizable way to create a story game.
+// KEYWORD: simple
 
 /*
-	need to add basic libraries/methods to make game creation even easier.
+	add basic libraries/methods to make game creation even easier.
 
 	* lobby system
 	* sound and music (implement into Act)
@@ -12,79 +14,53 @@ import { UiProvider } from "./ui-provider";
 	* life system
 */
 
-export class Fable {
-	private acts: Map<string, Act>;
-	private characters: Map<string, Character>;
+export type ActList = ReadonlyArray<Act>;
+export type CharacterList = ReadonlyArray<Character>;
+
+export interface FableComponents<A extends ActList, C extends CharacterList> {
+	readonly acts: A;
+	readonly characters: C;
+	readonly name: string;
+}
+
+// not everything is connected, ex. Character's have no connection to the Fable so why even pass them?
+export class Fable<A extends ActList, C extends CharacterList> {
+	private readonly acts: A;
+	private readonly characters: C; // maybe make this public? then this is how you would access characters.
+	public readonly name: string;
 
 	private currentAct?: Act;
 
-	public readonly name: string;
-
-	constructor(name: string, uiProvider?: UiProvider) {
-		this.acts = new Map<string, Act>();
-		this.characters = new Map<string, Character>();
-
-		this.name = name;
+	constructor(components: FableComponents<A, C>) {
+		this.acts = components.acts;
+		this.characters = components.characters;
+		this.name = components.name;
 	}
 
-	public addAct(act: Act) {
-		const acts = this.acts;
-		const actName = act.name;
-
-		assert(!acts.has(actName), `There is already an Act with the name '${actName} in the Fable '${this.name}`);
-
-		acts.set(actName, act);
-	}
-
-	public addActs(actList: ReadonlyArray<Act>) {
-		const acts = this.acts;
-
-		for (const act of actList) {
-			const actName = act.name;
-
-			assert(!acts.has(actName), `There is already an Act with the name '${actName} in the Fable '${this.name}`);
-
-			acts.set(actName, act);
-		}
-	}
-
-	public addCharacter(character: Character) {
-		const characters = this.characters;
-		const characterName = character.name;
-
-		assert(
-			!characters.has(characterName),
-			`There is already a Character with the name '${characterName}' in the Fable '${this.name}'`,
-		);
-
-		characters.set(characterName, character);
-	}
-
-	public addCharacters(characterList: ReadonlyArray<Character>) {
-		const characters = this.characters;
-
-		for (const character of characterList) {
-			const characterName = character.name;
-
-			assert(
-				!characters.has(characterName),
-				`There is already a Character with the name '${characterName}' in the Fable '${this.name}'`,
-			);
-
-			characters.set(character.name, character);
-		}
-	}
-
-	public playAct(name: string) {
+	/// Plays a specific Act.
+	public playAct(name: A[number]["name"]) {
 		const currentAct = this.currentAct;
-		const targetAct = this.acts.get(name);
+		const targetAct = this.acts.find((act) => act.name === name);
 
 		assert(!currentAct, `An Act with the name '${currentAct?.name}' is already playing in the Fable '${this.name}`);
-		assert(targetAct, `There is no Act with the name '${name}' in the Fable '${this.name}'`);
+		assert(targetAct, `There is no Act with the name '${name as string}' in the Fable '${this.name}'`);
 
 		targetAct.completed.connect(() => (this.currentAct = undefined));
 		targetAct.play();
 
 		this.currentAct = targetAct;
+	}
+
+	/// Plays each Act in order.
+	public start() {
+		const acts = this.acts;
+		const currentAct = this.currentAct;
+
+		assert(!currentAct, `An Act with the name '${currentAct?.name}' is already playing in the Fable '${this.name}`);
+
+		for (const act of acts) {
+			act.play();
+			act.completed.connect(() => {}); // yield until act has completed.
+		}
 	}
 }

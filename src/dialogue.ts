@@ -11,8 +11,3 @@ export interface Dialogue extends Pick<DialogueOption, "choices"> {
 	readonly greeting: string; // said at the start of every interaction
 	readonly farewell: string; // said whenever the goodbye option is chosen
 }
-
-export function buildDialogue(dialogue: Dialogue, uiProvider: string) {
-	print(uiProvider);
-	// uiProvider.createDialogue(dialogue)
-}
