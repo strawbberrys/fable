@@ -1,11 +1,11 @@
 {
   "name": "@rbxts/fable",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "An easy to use story (game) creator for Roblox. Made in roblox-ts.",
   "main": "out/init.lua",
   "scripts": {
     "build": "rbxtsc --type=game -p ./example --rojo ./example/default.project.json && rojo build -o fable-example.rbxl ./example/default.project.json",
-    "watch": "rbxtsc -w --type=game -p ./example --rojo ./example/default.project.json & rojo serve ./example/default.project.json"
+    "serve": "rbxtsc -w --type=game -p ./example --rojo ./example/default.project.json & rojo serve ./example/default.project.json"
   },
   "keywords": [],
   "author": "strawberrys",

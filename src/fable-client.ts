@@ -1,5 +1,5 @@
-import type { UiProvider } from "./ui-provider";
 import { showDialogue } from "./remotes";
+import type { UiProvider } from "./ui-provider";
 
 export namespace FableClient {
 	let started = false;
@@ -9,6 +9,6 @@ export namespace FableClient {
 
 		started = true;
 
-		showDialogue.OnClientEvent.Connect(uiProvider.createDialogue);
+		showDialogue.OnClientEvent.Connect((dialogue) => uiProvider.createDialogue(dialogue));
 	}
 }
